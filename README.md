@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# IFrame Parent Application
+
+This is a Next.js application that demonstrates embedding an iframe and handling postMessage communication between the parent and child frames.
+
+## Features
+
+- Parent application running on port 3001
+- Embeds an iframe that loads content from localhost:3000
+- Implements a postMessage listener to dynamically adjust iframe height
+- Sets iframe scrolling to "none" for seamless integration
+- Responsive design with header and footer
 
 ## Getting Started
 
-First, run the development server:
+1. Clone this repository
+2. Install dependencies:
+   ```
+   npm install
+   ```
+3. Run the development server:
+   ```
+   npm run dev
+   ```
+4. The parent application will run on [http://localhost:3001](http://localhost:3001)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Child Application
+
+For this to work properly, you need to have a child application running on port 3000 that sends height information via postMessage. Example implementation for the child application:
+
+```javascript
+// In your child application (running on port 3000)
+useEffect(() => {
+  // Function to send the height to the parent
+  const sendHeightToParent = () => {
+    const height = document.body.scrollHeight;
+    window.parent.postMessage({ height }, 'http://localhost:3001');
+  };
+
+  // Send initial height
+  sendHeightToParent();
+
+  // Send height when window is resized
+  window.addEventListener('resize', sendHeightToParent);
+
+  // Optional: Send height when content changes
+  const observer = new MutationObserver(sendHeightToParent);
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  return () => {
+    window.removeEventListener('resize', sendHeightToParent);
+    observer.disconnect();
+  };
+}, []);
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deployment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+To build the application for production:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+npm run build
+```
 
-## Learn More
+To start the production server:
 
-To learn more about Next.js, take a look at the following resources:
+```
+npm start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Notes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- For production, update the iframe URL and origins in the postMessage handlers
+- Add proper CORS headers and security measures for production use

@@ -7,7 +7,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       {/* <Header /> */}
       <main className="flex-grow">
-        <div className="container mx-auto px-2 py-8">
+        <div className="container mx-auto px-0 py-8">
           <h2 className="text-3xl text-center font-bold mb-6">BolaVIP Mock IFrame Header</h2>
           <p className="mb-8 text-lg text-gray-700">
             {/* This application embeds a child iframe from localhost:3000 and listens for height adjustments via postMessage. */}

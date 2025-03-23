@@ -1,7 +1,6 @@
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import IframeContainer from "@/components/IframeContainer";
-import ContentSection from "@/components/ContentSection";
+
 
 export default function Home() {
   return (

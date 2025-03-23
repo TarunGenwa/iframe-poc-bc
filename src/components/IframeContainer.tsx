@@ -10,7 +10,8 @@ const IframeContainer: React.FC = () => {
     const handleMessage = (event: MessageEvent) => {
       // Only accept messages from the iframe source
       // if (event.origin !== 'https://bvf2p.if.stage.bc.networkgaming.co.uk') return;
-      if (event.origin !== 'http://localhost:3000') return;
+      const allowedOrigins = ['http://localhost:3000', 'https://bvf2p.if.stage.bc.networkgaming.co.uk']
+      if (!allowedOrigins.includes(event.origin)) return;
 
       
       // Check if the message contains a height parameter
@@ -21,6 +22,16 @@ const IframeContainer: React.FC = () => {
           setHeight(height);
         }
       }
+
+      if (event.data && typeof event.data === 'object' && event.data.type === 'scroll' ) {
+        const { type } = event.data;
+        if (type === 'scroll') {
+          if(document) {
+            document.getElementById('iframe')?.scrollIntoView();
+          } 
+        }
+      }
+
     };
 
     // Add event listener
@@ -33,7 +44,7 @@ const IframeContainer: React.FC = () => {
   }, []);
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-2">
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         <iframe
           id='iframe'

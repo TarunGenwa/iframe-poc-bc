@@ -49,7 +49,7 @@ const IframeContainer: React.FC = () => {
         <iframe
           id='iframe'
           ref={iframeRef}
-          src="http://localhost:3000"
+          src="https://bvf2p.if.stage.bc.networkgaming.co.uk"
           width="100%"
           height={`${height}px`}
           style={{ border: 'none', overflow: 'hidden' }}

@@ -9,6 +9,7 @@ const IframeContainer: React.FC = () => {
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       // Only accept messages from the iframe source
+      console.log(event)
       const allowedOrigins = ['http://localhost:3000', 'https://bvf2p.if.stage.bc.networkgaming.co.uk']
       if (!allowedOrigins.includes(event.origin)) return;
 

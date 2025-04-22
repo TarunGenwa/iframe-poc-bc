@@ -9,18 +9,17 @@ const IframeContainer: React.FC = () => {
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       // Only accept messages from the iframe source
-      // if (event.origin !== 'https://bvf2p.if.stage.bc.networkgaming.co.uk') return;
       const allowedOrigins = ['http://localhost:3000', 'https://bvf2p.if.stage.bc.networkgaming.co.uk']
       if (!allowedOrigins.includes(event.origin)) return;
-      console.log('event', event.data)
 
-      if(event.data.type === 'setAccessToken') {
-        console.log(event.data)
-        const { accessToken } = event.data;
-        if (typeof accessToken === 'string') {
-          console.log('seeting localstorage')
+      if(event.data.type === 'auth') {
+        const { accessToken, refreshToken, accessTokenExpiry, refreshTokenExpiry, playerDetails } = event.data;
+
           localStorage.setItem('accessToken', accessToken);
-        }
+          localStorage.setItem('refreshToken', refreshToken);
+          localStorage.setItem('accessTokenExpiry', accessTokenExpiry);
+          localStorage.setItem('refreshTokenExpiry', refreshTokenExpiry);
+          localStorage.setItem('playerDetails', (playerDetails));
       }
       // Check if the message contains a height parameter
       if (event.data && typeof event.data === 'object' && 'height' in event.data) {
@@ -67,12 +66,11 @@ const IframeContainer: React.FC = () => {
         <iframe
           id='iframe'
           ref={iframeRef}
-          src="https://bvf2p.if.stage.bc.networkgaming.co.uk"
-          // src='http://localhost:3000'
+          // src="https://bvf2p.if.stage.bc.networkgaming.co.uk"
+          src='http://localhost:3000'
           width="100%"
           height={`${height}px`}
           style={{ border: 'none', overflow: 'hidden' }}
-          // scrolling="no"
           title="Embedded content"
         />
       </div>

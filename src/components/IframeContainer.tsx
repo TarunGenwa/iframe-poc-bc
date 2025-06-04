@@ -10,7 +10,7 @@ const IframeContainer: React.FC = () => {
     const handleMessage = (event: MessageEvent) => {
       // Only accept messages from the iframe source
       console.log(event)
-      const allowedOrigins = ['http://localhost:3000', 'https://bcalphaf2p.if.prod.bc.networkgaming.co.uk']
+      const allowedOrigins = ['http://localhost:3000', 'https://bcalphaf2p.if.stage.bc.networkgaming.co.uk']
       if (!allowedOrigins.includes(event.origin)) return;
 
       // Check if the message contains a height parameter
@@ -58,7 +58,7 @@ const IframeContainer: React.FC = () => {
         <iframe
           id='iframe'
           ref={iframeRef}
-          src="https://bcalphaf2p.if.prod.bc.networkgaming.co.uk"
+          src="https://bcalphaf2p.if.stage.bc.networkgaming.co.uk"
           // src='http://localhost:3000'
           width="100%"
           height={`${height}px`}

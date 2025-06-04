@@ -1,4 +1,4 @@
-import Footer from "@/components/Footer";
+
 import IframeContainer from "@/components/IframeContainer";
 
 

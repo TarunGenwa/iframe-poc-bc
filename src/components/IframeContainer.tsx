@@ -10,18 +10,9 @@ const IframeContainer: React.FC = () => {
     const handleMessage = (event: MessageEvent) => {
       // Only accept messages from the iframe source
       console.log(event)
-      const allowedOrigins = ['http://localhost:3000', 'https://bvf2p.if.stage.bc.networkgaming.co.uk']
+      const allowedOrigins = ['http://localhost:3000', 'https://bcalphaf2p.if.prod.bc.networkgaming.co.uk']
       if (!allowedOrigins.includes(event.origin)) return;
 
-      if(event.data.type === 'auth') {
-        const { accessToken, refreshToken, accessTokenExpiry, refreshTokenExpiry, playerDetails } = event.data;
-
-          localStorage.setItem('accessToken', accessToken);
-          localStorage.setItem('refreshToken', refreshToken);
-          localStorage.setItem('accessTokenExpiry', accessTokenExpiry);
-          localStorage.setItem('refreshTokenExpiry', refreshTokenExpiry);
-          localStorage.setItem('playerDetails', (playerDetails));
-      }
       // Check if the message contains a height parameter
       if (event.data && typeof event.data === 'object' && 'height' in event.data) {
         const { height } = event.data;
@@ -67,8 +58,8 @@ const IframeContainer: React.FC = () => {
         <iframe
           id='iframe'
           ref={iframeRef}
-          // src="https://bvf2p.if.stage.bc.networkgaming.co.uk"
-          src='http://localhost:3000'
+          src="https://bcalphaf2p.if.prod.bc.networkgaming.co.uk"
+          // src='http://localhost:3000'
           width="100%"
           height={`${height}px`}
           style={{ border: 'none', overflow: 'hidden' }}

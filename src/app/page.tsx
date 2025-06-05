@@ -8,7 +8,7 @@ export default function Home() {
       {/* <Header /> */}
       <main className="flex-grow">
         <div className="container mx-auto px-0 ">
-          <h2 className="text-3xl text-center font-bold sticky top-0 bg-white dark:bg-[blue] py-4 z-10"></h2>
+          <h2 className="text-3xl text-center font-bold sticky top-0 bg-white dark:bg-[black] py-4 z-10"></h2>
           <IframeContainer />
         </div>
         {/* <ContentSection /> */}

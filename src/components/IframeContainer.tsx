@@ -10,7 +10,7 @@ const IframeContainer: React.FC = () => {
     const handleMessage = (event: MessageEvent) => {
       // Only accept messages from the iframe source
       console.log(event)
-      let allowedOrigins = process?.env?.NEXT_PUBLIC_IFRAME_ALLOWED_ORIGINS?.split(', ') || []
+      const allowedOrigins = process?.env?.NEXT_PUBLIC_IFRAME_ALLOWED_ORIGINS?.split(', ') || []
       if (!allowedOrigins.includes(event.origin)) return;
 
       // Check if the message contains a height parameter

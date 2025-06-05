@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Parent IFrame Application",
-  description: "A Next.js application that hosts an iframe with postMessage communication",
+  title: "Aplicativo IFrame",
+  description: "Uma aplicação em Next.js que hospeda um iframe com comunicação via postMessage.",
 };
 
 export default function RootLayout({

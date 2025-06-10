@@ -9,7 +9,12 @@ const IframeContainer: React.FC = () => {
   const [iframeUrl, setIframeUrl] = useState<string>(process.env.NEXT_PUBLIC_IFRAME_HOST_URL || 'http://localhost:3000');
 
   const searchParams = useSearchParams();
+
   useEffect(() => {
+    if(!searchParams.get('ngAction') || searchParams.get("ngAction")?.length === 0) {
+      setIframeUrl(process.env.NEXT_PUBLIC_IFRAME_HOST_URL || 'http://localhost:3000');
+      return;
+    }
 
     const url = iframeUrl + `/?ngAction=${searchParams.get("ngAction") || ''}&passwordResetId=${searchParams.get("passwordResetId") || ''}`;
     setIframeUrl(url);

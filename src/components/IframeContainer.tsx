@@ -53,8 +53,8 @@ const IframeContainer: React.FC = () => {
   }, []);
 
   return (
-    <div className="container ">
-      <div className="bg-white  shadow-lg overflow-hidden">
+    <div className=" ">
+      <div className="bg-base-100  shadow-lg overflow-hidden">
         <iframe
           id='iframe'
           ref={iframeRef}

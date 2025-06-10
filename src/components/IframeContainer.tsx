@@ -1,10 +1,22 @@
 "use client";
 
+import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 
 const IframeContainer: React.FC = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [height, setHeight] = useState<number>(500); // Default height
+  const [ngAction, setNgAction] = useState<string | null>(null);
+  const [passwordResetId, setPasswordResetId] = useState<string | null>(null);
+  const [iframeUrl, setIframeUrl] = useState<string>(process.env.NEXT_PUBLIC_IFRAME_HOST_URL || 'http://localhost:3000');
+
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    setNgAction(searchParams.get("ngAction"));
+    setPasswordResetId(searchParams.get("passwordResetId"));
+    const url = iframeUrl + `/?ngAction=${searchParams.get("ngAction") || ''}&passwordResetId=${searchParams.get("passwordResetId") || ''}`;
+    setIframeUrl(url);
+  }, [searchParams]);
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -58,7 +70,7 @@ const IframeContainer: React.FC = () => {
         <iframe
           id='iframe'
           ref={iframeRef}
-          src={process.env.NEXT_PUBLIC_IFRAME_HOST_URL || 'http://localhost:3000'}
+          src={iframeUrl}
           width="100%"
           height={`${height}px`}
           style={{ border: 'none', overflow: 'hidden' }}

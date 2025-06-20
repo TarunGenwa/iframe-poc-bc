@@ -6,17 +6,17 @@ import React, { useEffect, useRef, useState } from 'react';
 const IframeContainer: React.FC = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [height, setHeight] = useState<number>(500); // Default height
-  const [iframeUrl, setIframeUrl] = useState<string>(process.env.NEXT_PUBLIC_IFRAME_HOST_URL || 'http://localhost:3000');
+  const [iframeUrl] = useState<string>(process.env.NEXT_PUBLIC_IFRAME_HOST_URL || 'http://localhost:3000');
 
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    let utm_source = searchParams.get("source") || '';
-    let utm_medium = searchParams.get("medium") || '';
-    let utm_campaign = searchParams.get("campaign") || '';
+    const utm_source = searchParams.get("source") || '';
+    const utm_medium = searchParams.get("medium") || '';
+    const utm_campaign = searchParams.get("campaign") || '';
     let ng_action = searchParams.get("ngAction") || '';
     const iframe = iframeRef.current;
-    let postMsg: any;
+    // let postMsgData: { type: string; utmSource: string; utmMedium: string; utmCampaign: string; ngAction: string; };
     if (!iframe) {
       console.error('Iframe not found');
       return;
@@ -33,7 +33,7 @@ const IframeContainer: React.FC = () => {
       ng_action = '/change-password?passwordResetId=' + searchParams.get("passwordResetId") || '';
     }
 
-    postMsg = {
+     const postMsgData = {
       type,
       utmSource: utm_source,
       utmMedium: utm_medium,
@@ -41,10 +41,10 @@ const IframeContainer: React.FC = () => {
       ngAction: ng_action,
     }
 
-    console.log('postMsg', postMsg);
+    console.log('postMsg', postMsgData);
      
     iframe.onload = () => {
-      iframe.contentWindow?.postMessage(postMsg, '*');
+      iframe.contentWindow?.postMessage(postMsgData, '*');
     };
   }, [searchParams]);
 

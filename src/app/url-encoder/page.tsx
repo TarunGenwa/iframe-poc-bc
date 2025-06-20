@@ -106,7 +106,7 @@ export default function URLEncoder() {
 
   useEffect(() => {
     buildUrl();
-  }, [selectedRoute, queryParams]);
+  }, [selectedRoute, queryParams, buildUrl]);
 
   const handleEncode = () => {
     try {
@@ -313,7 +313,7 @@ export default function URLEncoder() {
               <li><strong>Manual Input:</strong> Enter any URL or text directly in the input field</li>
               <li><strong>Encode:</strong> Converts special characters in URLs to percent-encoded format</li>
               <li><strong>Decode:</strong> Converts percent-encoded characters back to their original form</li>
-              <li><strong>Copy:</strong> Click "Copy to Clipboard" to copy the encoded/decoded result</li>
+              <li><strong>Copy:</strong> Click &quot;Copy to Clipboard&quot; to copy the encoded/decoded result</li>
               <li>All routes are from the Fantasy Frontend application documentation</li>
             </ul>
           </div>

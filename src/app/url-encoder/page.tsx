@@ -17,13 +17,13 @@ export default function URLEncoder() {
     { path: '/entry-history', description: 'User contest entry history' },
     { path: '/forgot-password', description: 'Password recovery' },
     { path: '/in-play', description: 'Live games view' },
-    { path: '/lobby-old', description: 'Legacy lobby interface' },
+    // { path: '/lobby-old', description: 'Legacy lobby interface' },
     { path: '/login', description: 'User login' },
     { path: '/marketing-preferences', description: 'Marketing opt-in/out' },
     { path: '/menu', description: 'Navigation menu' },
     { path: '/mygames', description: 'User active games' },
     { path: '/notifications', description: 'User notifications' },
-    { path: '/pg', description: 'Payment gateway' },
+    // { path: '/pg', description: 'Payment gateway' },
     { path: '/picker', description: 'Team selection interface' },
     { path: '/picker/previous', description: 'Previous team selections' },
     { path: '/series', description: 'Series/tournament view' },
@@ -33,13 +33,13 @@ export default function URLEncoder() {
     { path: '/tnc', description: 'Terms and conditions' },
     { path: '/verify-auth', description: 'Authentication verification' },
     { path: '/verify-email', description: 'Email verification' },
-    { path: '/wallet', description: 'Wallet overview' },
-    { path: '/wallet/deposit', description: 'Deposit funds' },
-    { path: '/wallet/deposit-status', description: 'Deposit status tracking' },
-    { path: '/wallet/history', description: 'Transaction history' },
-    { path: '/wallet/register-status', description: 'Wallet registration status' },
-    { path: '/wallet/saved-cards', description: 'Saved payment methods' },
-    { path: '/wallet/withdraw', description: 'Withdraw funds' }
+    // { path: '/wallet', description: 'Wallet overview' },
+    // { path: '/wallet/deposit', description: 'Deposit funds' },
+    // { path: '/wallet/deposit-status', description: 'Deposit status tracking' },
+    // { path: '/wallet/history', description: 'Transaction history' },
+    // { path: '/wallet/register-status', description: 'Wallet registration status' },
+    // { path: '/wallet/saved-cards', description: 'Saved payment methods' },
+    // { path: '/wallet/withdraw', description: 'Withdraw funds' }
   ];
 
   const routeParams: Record<string, string[]> = {

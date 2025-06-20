@@ -11,17 +11,48 @@ const IframeContainer: React.FC = () => {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if(searchParams.get("ngAction") ) {
-      const url = iframeUrl + `/?ngAction=${searchParams.get("ngAction") || ''}&passwordResetId=${searchParams.get("passwordResetId") || ''}`;
-      setIframeUrl(url); 
+    let utm_source = searchParams.get("source") || '';
+    let utm_medium = searchParams.get("medium") || '';
+    let utm_campaign = searchParams.get("campaign") || '';
+    let ng_action = searchParams.get("ngAction") || '';
+    const iframe = iframeRef.current;
+    let postMsg: any;
+    if (!iframe) {
+      console.error('Iframe not found');
       return;
     }
+
+    let type = 'navigate';
+
+    if (ng_action.includes('compArena')) {
+      type = 'comparena';
+    }
+
+    if(ng_action.includes('change-password')) {
+      type = 'navigate';
+      ng_action = '/change-password?passwordResetId=' + searchParams.get("passwordResetId") || '';
+    }
+
+    postMsg = {
+      type,
+      utmSource: utm_source,
+      utmMedium: utm_medium,
+      utmCampaign: utm_campaign,
+      ngAction: ng_action,
+    }
+
+    console.log('postMsg', postMsg);
+     
+    iframe.onload = () => {
+      iframe.contentWindow?.postMessage(postMsg, '*');
+    };
   }, [searchParams]);
+
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       // Only accept messages from the iframe source
-      console.log(event)
+      // console.log(event)
       const allowedOrigins = process?.env?.NEXT_PUBLIC_IFRAME_ALLOWED_ORIGINS?.split(', ') || []
       if (!allowedOrigins.includes(event.origin)) return;
 
@@ -37,7 +68,7 @@ const IframeContainer: React.FC = () => {
         const { type } = event.data;
 
         if (type === 'scroll') {
-        console.log('scrolllevent')
+        // console.log('scrolllevent')
           if(document) {
             const iframe = document.getElementById('iframe');
             if (iframe) {

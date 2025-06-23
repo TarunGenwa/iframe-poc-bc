@@ -14,7 +14,7 @@ const IframeContainer: React.FC = () => {
     const utm_source = searchParams.get("source") || '';
     const utm_medium = searchParams.get("medium") || '';
     const utm_campaign = searchParams.get("campaign") || '';
-    let ng_action = searchParams.get("ngAction") || '';
+    const ng_action = searchParams.get("ngAction") || '';
 
     setIFrameUrl((prevUrl) => {
       const url = new URL(prevUrl);
@@ -24,7 +24,7 @@ const IframeContainer: React.FC = () => {
       if (ng_action) url.searchParams.set('ngAction', ng_action);
       return url.toString();
     });
-    
+
   }, [searchParams]);
   // useEffect(() => {
   //   const utm_source = searchParams.get("source") || '';

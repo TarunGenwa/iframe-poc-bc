@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 const IframeContainer: React.FC = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [height, setHeight] = useState<number>(500); // Default height
-  const [iframeUrl] = useState<string>(process.env.NEXT_PUBLIC_IFRAME_HOST_URL || 'http://localhost:3000');
+  const [iframeUrl, setIFrameUrl] = useState<string>(process.env.NEXT_PUBLIC_IFRAME_HOST_URL || 'http://localhost:3000');
 
   const searchParams = useSearchParams();
 
@@ -15,38 +15,54 @@ const IframeContainer: React.FC = () => {
     const utm_medium = searchParams.get("medium") || '';
     const utm_campaign = searchParams.get("campaign") || '';
     let ng_action = searchParams.get("ngAction") || '';
-    const iframe = iframeRef.current;
-    // let postMsgData: { type: string; utmSource: string; utmMedium: string; utmCampaign: string; ngAction: string; };
-    if (!iframe) {
-      console.error('Iframe not found');
-      return;
-    }
 
-    let type = 'navigate';
-
-    if (ng_action.includes('compArena')) {
-      type = 'comparena';
-    }
-
-    if(ng_action.includes('change-password')) {
-      type = 'navigate';
-      ng_action = '/change-password?passwordResetId=' + searchParams.get("passwordResetId") || '';
-    }
-
-     const postMsgData = {
-      type,
-      utmSource: utm_source,
-      utmMedium: utm_medium,
-      utmCampaign: utm_campaign,
-      ngAction: ng_action,
-    }
-
-    console.log('postMsg', postMsgData);
-     
-    iframe.onload = () => {
-      iframe.contentWindow?.postMessage(postMsgData, '*');
-    };
+    setIFrameUrl((prevUrl) => {
+      const url = new URL(prevUrl);
+      if (utm_source) url.searchParams.set('utm_source', utm_source);
+      if (utm_medium) url.searchParams.set('utm_medium', utm_medium);
+      if (utm_campaign) url.searchParams.set('utm_campaign', utm_campaign);
+      if (ng_action) url.searchParams.set('ngAction', ng_action);
+      return url.toString();
+    });
+    
   }, [searchParams]);
+  // useEffect(() => {
+  //   const utm_source = searchParams.get("source") || '';
+  //   const utm_medium = searchParams.get("medium") || '';
+  //   const utm_campaign = searchParams.get("campaign") || '';
+  //   let ng_action = searchParams.get("ngAction") || '';
+  //   const iframe = iframeRef.current;
+  //   // let postMsgData: { type: string; utmSource: string; utmMedium: string; utmCampaign: string; ngAction: string; };
+  //   if (!iframe) {
+  //     console.error('Iframe not found');
+  //     return;
+  //   }
+
+  //   let type = 'navigate';
+
+  //   if (ng_action.includes('view')) {
+  //     type = 'view';
+  //   }
+
+  //   if(ng_action.includes('change-password')) {
+  //     type = 'navigate';
+  //     ng_action = '/change-password?passwordResetId=' + searchParams.get("passwordResetId") || '';
+  //   }
+
+  //    const postMsgData = {
+  //     type,
+  //     utmSource: utm_source,
+  //     utmMedium: utm_medium,
+  //     utmCampaign: utm_campaign,
+  //     ngAction: ng_action,
+  //   }
+
+  //   console.log('postMsg', postMsgData);
+     
+  //   iframe.onload = () => {
+  //     iframe.contentWindow?.postMessage(postMsgData, '*');
+  //   };
+  // }, [searchParams]);
 
 
   useEffect(() => {

@@ -7,6 +7,9 @@ export default function URLEncoder() {
   const [output, setOutput] = useState('');
   const [selectedRoute, setSelectedRoute] = useState('');
   const [queryParams, setQueryParams] = useState([{ key: '', value: '' }]);
+  const [encodeUtmSource, setEncodeUtmSource] = useState('');
+  const [encodeUtmMedium, setEncodeUtmMedium] = useState('');
+  const [encodeUtmCampaign, setEncodeUtmCampaign] = useState('');
 
   const routes = [
     { path: '/', description: 'Homepage/Dashboard' },
@@ -117,7 +120,17 @@ export default function URLEncoder() {
 
   const handleEncode = () => {
     try {
-      const encoded = `?ngAction=${encodeURIComponent(input)}`;
+      const utmParams = [];
+      if (encodeUtmSource.trim()) utmParams.push(`source=${encodeURIComponent(encodeUtmSource)}`);
+      if (encodeUtmMedium.trim()) utmParams.push(`medium=${encodeURIComponent(encodeUtmMedium)}`);
+      if (encodeUtmCampaign.trim()) utmParams.push(`campaign=${encodeURIComponent(encodeUtmCampaign)}`);
+      
+      let utmQuery = '';
+      if (utmParams.length > 0) {
+        utmQuery = '&' + utmParams.join('&');
+      }
+      
+      const encoded = `?ngAction=${encodeURIComponent(input)}${utmQuery}`;
       setOutput(encoded);
     } catch (error) {
       setOutput('Error: Invalid input');
@@ -138,6 +151,9 @@ export default function URLEncoder() {
     setOutput('');
     setSelectedRoute('');
     setQueryParams([{ key: '', value: '' }]);
+    setEncodeUtmSource('');
+    setEncodeUtmMedium('');
+    setEncodeUtmCampaign('');
   };
 
   const handleCopyOutput = async () => {
@@ -232,13 +248,13 @@ export default function URLEncoder() {
                         className="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-400"
                       />
                       <span className="text-gray-500">=</span>
-                      {param.key === 'view' && parameterValues[param.key] ? (
+                      {parameterValues[param.key] ? (
                         <select
                           value={param.value}
                           onChange={(e) => handleParamChange(index, 'value', e.target.value)}
                           className="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                         >
-                          <option value="">Select view type...</option>
+                          <option value="">Select {param.key}...</option>
                           {parameterValues[param.key].map((value) => (
                             <option key={value} value={value}>
                               {value}
@@ -280,6 +296,55 @@ export default function URLEncoder() {
                 placeholder="Enter URL or text to encode/decode, or use the URL builder above..."
                 className="w-full h-32 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none bg-white text-gray-900 placeholder-gray-400"
               />
+            </div>
+
+            {/* UTM Parameters for Encoding */}
+            <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 p-6 rounded-xl">
+              <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span className="mr-2">🏷️</span>
+                UTM Parameters (for Encoding)
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label htmlFor="utm-source" className="block text-sm font-medium text-gray-700 mb-2">
+                    Source:
+                  </label>
+                  <input
+                    id="utm-source"
+                    type="text"
+                    value={encodeUtmSource}
+                    onChange={(e) => setEncodeUtmSource(e.target.value)}
+                    placeholder="source"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white text-gray-900 placeholder-gray-400"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="utm-medium" className="block text-sm font-medium text-gray-700 mb-2">
+                    Medium:
+                  </label>
+                  <input
+                    id="utm-medium"
+                    type="text"
+                    value={encodeUtmMedium}
+                    onChange={(e) => setEncodeUtmMedium(e.target.value)}
+                    placeholder="medium"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white text-gray-900 placeholder-gray-400"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="utm-campaign" className="block text-sm font-medium text-gray-700 mb-2">
+                    Campaign:
+                  </label>
+                  <input
+                    id="utm-campaign"
+                    type="text"
+                    value={encodeUtmCampaign}
+                    onChange={(e) => setEncodeUtmCampaign(e.target.value)}
+                    placeholder="campaign"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white text-gray-900 placeholder-gray-400"
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="flex gap-3 justify-center flex-wrap">

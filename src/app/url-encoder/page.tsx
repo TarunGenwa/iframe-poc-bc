@@ -64,6 +64,13 @@ export default function URLEncoder() {
     '/wallet/history': ['backUrl']
   };
 
+  const parameterValues: Record<string, string[]> = {
+    'view': ['competitionLobby', 'competitionCard', 'roundSeriesCard', 'gameSeriesCard'],
+    'utm_source': ['source'],
+    'utm_medium': ['medium'],
+    'utm_campaign': ['campaign']
+  };
+
   const handleRouteSelect = (routePath: string) => {
     setSelectedRoute(routePath);
   };
@@ -110,7 +117,7 @@ export default function URLEncoder() {
 
   const handleEncode = () => {
     try {
-      const encoded = encodeURIComponent(input);
+      const encoded = `?ngAction=${encodeURIComponent(input)}`;
       setOutput(encoded);
     } catch (error) {
       setOutput('Error: Invalid input');
@@ -225,13 +232,28 @@ export default function URLEncoder() {
                         className="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-400"
                       />
                       <span className="text-gray-500">=</span>
-                      <input
-                        type="text"
-                        placeholder="Parameter value"
-                        value={param.value}
-                        onChange={(e) => handleParamChange(index, 'value', e.target.value)}
-                        className="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-400"
-                      />
+                      {param.key === 'view' && parameterValues[param.key] ? (
+                        <select
+                          value={param.value}
+                          onChange={(e) => handleParamChange(index, 'value', e.target.value)}
+                          className="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
+                        >
+                          <option value="">Select view type...</option>
+                          {parameterValues[param.key].map((value) => (
+                            <option key={value} value={value}>
+                              {value}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <input
+                          type="text"
+                          placeholder="Parameter value"
+                          value={param.value}
+                          onChange={(e) => handleParamChange(index, 'value', e.target.value)}
+                          className="flex-1 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-400"
+                        />
+                      )}
                       {queryParams.length > 1 && (
                         <button
                           onClick={() => removeParam(index)}
